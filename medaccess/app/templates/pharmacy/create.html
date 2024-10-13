@@ -1,0 +1,52 @@
+<!-- app/templates/pharmacy/create.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="main-content mt-4 p-5">
+    <h1 class="text-center mb-4">Create New Pharmacy</h1>
+
+    <form action="{{ url_for('pharmacy_bp.create_pharmacy') }}" method="POST" class="p-4 shadow-sm bg-white rounded">
+        <div class="mb-3">
+            <label for="name" class="form-label">Pharmacy Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" id="location" name="location" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="phone_number" class="form-label">Phone Number</label>
+            <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="established_year" class="form-label">Established Year</label>
+            <input type="number" id="established_year" name="established_year" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="license_number" class="form-label">License Number</label>
+            <input type="text" id="license_number" name="license_number" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="owner_id" class="form-label">Owner</label>
+            <select id="owner_id" name="owner_id" class="form-select" required>
+                {% for user in users %}
+                    <option value="{{ user.userId }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-block">Create Pharmacy</button>
+        </div>
+    </form>
+
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('pharmacy_bp.get_pharmacies') }}" class="btn btn-secondary">Back to Pharmacies List</a>
+    </div>
+</div>
+{% endblock %}

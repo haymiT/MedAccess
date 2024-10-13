@@ -1,0 +1,137 @@
+<!-- app/templates/inventory/create.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Create New Inventory Item</h1>
+
+    <form action="{{ url_for('inventory_bp.create_inventory_item') }}" method="POST" class="p-4 shadow-sm bg-white rounded">
+        <!-- Pharmacy Selection -->
+        <div class="mb-3">
+            <label for="pharmacy_id" class="form-label">Pharmacy</label>
+            <select id="pharmacy_id" name="pharmacy_id" class="form-select" required>
+                {% for pharmacy in pharmacies %}
+                    <option value="{{ pharmacy.id }}">{{ pharmacy.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Medication Selection -->
+        <div class="mb-3">
+            <label for="medication_id" class="form-label">Medication</label>
+            <select id="medication_id" name="medication_id" class="form-select" required>
+                {% for medication in medications %}
+                    <option value="{{ medication.id }}">{{ medication.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Dosage Unit Selection -->
+        <div class="mb-3">
+            <label for="dosage_unit" class="form-label">Dosage Unit</label>
+            <select id="dosage_unit" name="dosage_unit" class="form-select" required onchange="updateDosageValues()">
+                <option value="">Select Dosage Unit</option>
+                <option value="Milligrams">Milligrams (mg)</option>
+                <option value="Micrograms">Micrograms (mcg)</option>
+                <option value="Grams">Grams (g)</option>
+                <option value="Milliliters">Milliliters (ml)</option>
+            </select>
+        </div>
+
+        <!-- Dosage Value Selection (Sub-dropdown) -->
+        <div class="mb-3">
+            <label for="dosage_value" class="form-label">Dosage Value</label>
+            <select id="dosage_value" name="dosage_value" class="form-select" required>
+                <option value="">Select Dosage Value</option>
+            </select>
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" required>
+        </div>
+
+        <!-- Unit Price -->
+        <div class="mb-3">
+            <label for="unit_price" class="form-label">Unit Price</label>
+            <input type="text" id="unit_price" name="unit_price" class="form-control" required>
+        </div>
+
+        <!-- Manufacturer -->
+        <div class="mb-3">
+            <label for="manufacturer" class="form-label">Manufacturer</label>
+            <input type="text" id="manufacturer" name="manufacturer" class="form-control" required>
+        </div>
+
+        <!-- Manufacturing Date -->
+        <div class="mb-3">
+            <label for="manufacturing_date" class="form-label">Manufacturing Date</label>
+            <input type="date" id="manufacturing_date" name="manufacturing_date" class="form-control" required>
+        </div>
+
+        <!-- Expiration Date -->
+        <div class="mb-3">
+            <label for="expiration_date" class="form-label">Expiration Date</label>
+            <input type="date" id="expiration_date" name="expiration_date" class="form-control" required>
+        </div>
+
+        <!-- Shelf Number -->
+        <div class="mb-3">
+            <label for="shelf_number" class="form-label">Shelf Number</label>
+            <input type="text" id="shelf_number" name="shelf_number" class="form-control">
+        </div>
+
+        <!-- Bin Card -->
+        <div class="mb-3">
+            <label for="bin_card" class="form-label">Bin Card</label>
+            <input type="text" id="bin_card" name="bin_card" class="form-control">
+        </div>
+
+        <!-- Score Card -->
+        <div class="mb-3">
+            <label for="score_card" class="form-label">Score Card</label>
+            <input type="text" id="score_card" name="score_card" class="form-control">
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-block">Create Inventory Item</button>
+        </div>
+    </form>
+
+    <div class="mt-4">
+        <a href="{{ url_for('inventory_bp.get_inventory_items') }}" class="btn btn-secondary">Back to Inventory List</a>
+    </div>
+</div>
+
+<!-- Include the script for dynamic sub-dropdowns -->
+<script>
+    function updateDosageValues() {
+        var dosageUnit = document.getElementById('dosage_unit').value;
+        var dosageValueSelect = document.getElementById('dosage_value');
+
+        // Clear previous values
+        dosageValueSelect.innerHTML = '<option value="">Select Dosage Value</option>';
+
+        var dosageOptions = [];
+
+        if (dosageUnit === 'Milligrams') {
+            dosageOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+        } else if (dosageUnit === 'Micrograms') {
+            dosageOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+        } else if (dosageUnit === 'Grams') {
+            dosageOptions = [1];  // Grams has only 1g
+        } else if (dosageUnit === 'Milliliters') {
+            dosageOptions = [5, 10, 15, 20, 50, 100, 200, 250, 500];
+        }
+
+        // Populate the sub-dropdown with appropriate values
+        for (var i = 0; i < dosageOptions.length; i++) {
+            var option = document.createElement('option');
+            option.value = dosageOptions[i];
+            option.text = dosageOptions[i] + ' ' + dosageUnit.charAt(0).toLowerCase();
+            dosageValueSelect.appendChild(option);
+        }
+    }
+</script>
+{% endblock %}

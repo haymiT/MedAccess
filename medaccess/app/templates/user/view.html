@@ -1,0 +1,16 @@
+<!-- app/templates/user/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>User Details</h1>
+<p><strong>Name:</strong> {{ user.name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+<p><strong>Role:</strong> {{ user.role }}</p>
+
+<a href="{{ url_for('user_bp.update_user', userId=user.userId) }}">Edit User</a>
+<form action="{{ url_for('user_bp.delete_user', userId=user.userId) }}" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?');">Delete User</button>
+</form>
+<a href="{{ url_for('user_bp.get_users') }}">Back to Users List</a>
+{% endblock %}

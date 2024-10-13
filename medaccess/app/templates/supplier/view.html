@@ -1,0 +1,17 @@
+<!-- app/templates/supplier/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Supplier Details</h1>
+<p><strong>Name:</strong> {{ supplier.name }}</p>
+<p><strong>Address:</strong> {{ supplier.address }}</p>
+<p><strong>Phone Number:</strong> {{ supplier.phone_number }}</p>
+<p><strong>Email:</strong> {{ supplier.email }}</p>
+<p><strong>Location:</strong> {{ supplier.location }}</p>
+
+<a href="{{ url_for('supplier_bp.update_supplier', id=supplier.id) }}">Edit Supplier</a>
+<form action="{{ url_for('supplier_bp.delete_supplier', id=supplier.id) }}" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?');">Delete Supplier</button>
+</form>
+<a href="{{ url_for('supplier_bp.get_suppliers') }}">Back to Suppliers List</a>
+{% endblock %}

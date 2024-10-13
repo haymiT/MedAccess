@@ -1,0 +1,10 @@
+<!-- app/templates/medication/search.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Search for Medication</h1>
+<form action="{{ url_for('medication_bp.search_medication') }}" method="GET">
+    <input type="text" name="query" placeholder="Enter medication name" required>
+    <button type="submit">Search</button>
+</form>
+{% endblock %}

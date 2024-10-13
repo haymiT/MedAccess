@@ -1,0 +1,51 @@
+<!-- app/templates/inventory/pharmacy_details.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">{{ pharmacy.name }} - Details</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ pharmacy.name }}</h5>
+            <p class="card-text"><strong>Location:</strong> {{ pharmacy.location }}</p>
+            <p class="card-text"><strong>Phone Number:</strong> {{ pharmacy.phone_number }}</p>
+            <p class="card-text"><strong>License Number:</strong> {{ pharmacy.license_number }}</p>
+            <p class="card-text"><strong>Owner:</strong> {{ pharmacy.owner.name }}</p>
+        </div>
+    </div>
+
+    <h2 class="mt-5">Drug Available at {{ pharmacy.name }}</h2>
+
+    {% if drugs %}
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Drug Name</th>
+                <th>Quantity</th>
+                <th>Dosage</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventory, medication in drugs %}
+            <tr>
+                <td>{{ medication.name }}</td>
+                <td>{{ inventory.quantity }}</td>
+                <td>{{ medication.dosage }}</td>
+                <td>{{ medication.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        No details available for this medication at the pharmacy.
+    </div>
+    {% endif %}
+
+    <div class="mt-3">
+        <a href="{{ url_for('inventory_bp.search_medication') }}" class="btn btn-secondary">Back to Search</a>
+    </div>
+</div>
+{% endblock %}

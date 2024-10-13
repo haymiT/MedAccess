@@ -1,0 +1,37 @@
+<!-- app/templates/inventory/index.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>All Inventory Items</h1>
+<a href="{{ url_for('inventory_bp.create_inventory_item') }}">Create New Inventory Item</a>
+<table>
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Manufacturer</th>
+            <th>Expiration Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in inventory_items %}
+        <tr>
+            <td>{{ item.medication.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit_price }}</td>
+            <td>{{ item.manufacturer }}</td>
+            <td>{{ item.expiration_date }}</td>
+            <td>
+                <a href="{{ url_for('inventory_bp.get_inventory_item', inventory_id=item.inventory_id) }}">View</a>
+                <a href="{{ url_for('inventory_bp.update_inventory_item', inventory_id=item.inventory_id) }}">Edit</a>
+                <form action="{{ url_for('inventory_bp.delete_inventory_item', inventory_id=item.inventory_id) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

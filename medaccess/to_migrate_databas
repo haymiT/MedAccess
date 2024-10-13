@@ -1,0 +1,5 @@
+flask db init
+
+flask db migrate -m "Add dosage_unit and dosage_value to inventory"
+
+flask db upgrade

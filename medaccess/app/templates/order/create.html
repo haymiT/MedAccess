@@ -1,0 +1,47 @@
+<!-- app/templates/order/create.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Create New Order</h1>
+
+<form action="{{ url_for('order_bp.create_order') }}" method="POST">
+    <label for="order_id">Order ID:</label>
+    <input type="text" id="order_id" name="order_id" required>
+
+    <label for="pharmacy_id">Pharmacy:</label>
+    <select id="pharmacy_id" name="pharmacy_id" required>
+        {% for pharmacy in pharmacies %}
+            <option value="{{ pharmacy.id }}">{{ pharmacy.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="supplier_id">Supplier:</label>
+    <select id="supplier_id" name="supplier_id" required>
+        {% for supplier in suppliers %}
+            <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="order_date">Order Date:</label>
+    <input type="date" id="order_date" name="order_date" required>
+
+    <label for="order_status">Order Status:</label>
+    <select id="order_status" name="order_status" required>
+        <option value="Pending">Pending</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+        <option value="Shipped">Shipped</option>
+        <option value="Delivered">Delivered</option>
+    </select>
+
+    <label for="item_name">Item Name:</label>
+    <input type="text" id="item_name" name="item_name" required>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" required>
+
+    <button type="submit">Create Order</button>
+</form>
+
+<a href="{{ url_for('order_bp.get_orders') }}">Back to Orders List</a>
+{% endblock %}

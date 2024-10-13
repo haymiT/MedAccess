@@ -1,0 +1,37 @@
+<!-- app/templates/supplier/index.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>All Suppliers</h1>
+<a href="{{ url_for('supplier_bp.create_supplier') }}">Create New Supplier</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for supplier in suppliers %}
+        <tr>
+            <td>{{ supplier.name }}</td>
+            <td>{{ supplier.address }}</td>
+            <td>{{ supplier.phone_number }}</td>
+            <td>{{ supplier.email }}</td>
+            <td>{{ supplier.location }}</td>
+            <td>
+                <a href="{{ url_for('supplier_bp.get_supplier', id=supplier.id) }}">View</a>
+                <a href="{{ url_for('supplier_bp.update_supplier', id=supplier.id) }}">Edit</a>
+                <form action="{{ url_for('supplier_bp.delete_supplier', id=supplier.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

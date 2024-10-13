@@ -1,0 +1,88 @@
+app/templates/medication/create.html
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Create New Medication</h1>
+
+<form action="{{ url_for('medication_bp.create_medication') }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option value="Gastrointestinal drugs">Gastrointestinal drugs</option>
+        <option value="Anti pain drugs">Anti pain drugs</option>
+        <option value="ENT Drugs">ENT Drugs</option>
+        <option value="Anti bacterial/antibiotics">Anti bacterial/antibiotics</option>
+        <option value="Anti Histamines and Anti allergies">Anti Histamines and Anti allergies</option>
+        <option value="Antihelminitics">Antihelminitics</option>
+        <option value="Hypoglycemic">Hypoglycemic</option>
+        <option value="CVS drugs">CVS drugs</option>
+        <option value="NSAID">NSAID</option>
+        <option value="Dermatological Agents">Dermatological Agents</option>
+        <option value="CNS drugs">CNS drugs</option>
+        <option value="Respiratory drugs">Respiratory drugs</option>
+        <option value="Hormonal Drugs">Hormonal Drugs</option>
+        <option value="Antiemetics and antiprotozoal drugs">Antiemetics and antiprotozoal drugs</option>
+        <option value="Ophthalmic products">Ophthalmic products</option>
+        <option value="Milk and cosmetics">Milk and cosmetics</option>
+        <option value="CBS drugs">CBS drugs</option>
+    </select>
+
+    <label for="dosage">Dosage:</label>
+    <select id="dosage" name="dosage" required>
+        <!-- Milligrams -->
+        <optgroup label="Milligrams (mg)">
+            <option value="100 mg">100 mg</option>
+            <option value="200 mg">200 mg</option>
+            <option value="300 mg">300 mg</option>
+            <option value="400 mg">400 mg</option>
+            <option value="500 mg">500 mg</option>
+            <option value="600 mg">600 mg</option>
+            <option value="700 mg">700 mg</option>
+            <option value="800 mg">800 mg</option>
+            <option value="900 mg">900 mg</option>
+            <option value="1000 mg">1000 mg</option>
+        </optgroup>
+        
+        <!-- Micrograms -->
+        <optgroup label="Micrograms (mcg)">
+            <option value="100 mcg">100 mcg</option>
+            <option value="200 mcg">200 mcg</option>
+            <option value="300 mcg">300 mcg</option>
+            <option value="400 mcg">400 mcg</option>
+            <option value="500 mcg">500 mcg</option>
+            <option value="600 mcg">600 mcg</option>
+            <option value="700 mcg">700 mcg</option>
+            <option value="800 mcg">800 mcg</option>
+            <option value="900 mcg">900 mcg</option>
+            <option value="1000 mcg">1000 mcg</option>
+        </optgroup>
+
+        <!-- Grams -->
+        <optgroup label="Grams (g)">
+            <option value="1 g">1 g</option>
+        </optgroup>
+
+        <!-- Milliliters -->
+        <optgroup label="Milliliters (mL)">
+            <option value="5 mL">5 mL</option>
+            <option value="10 mL">10 mL</option>
+            <option value="15 mL">15 mL</option>
+            <option value="20 mL">20 mL</option>
+            <option value="30 mL">30 mL</option>
+            <option value="50 mL">50 mL</option>
+            <option value="100 mL">100 mL</option>
+            <option value="200 mL">200 mL</option>
+            <option value="500 mL">500 mL</option>
+        </optgroup>
+    </select>
+
+    <button type="submit">Create Medication</button>
+</form>
+
+<a href="{{ url_for('medication_bp.get_medications') }}">Back to Medications List</a>
+{% endblock %}

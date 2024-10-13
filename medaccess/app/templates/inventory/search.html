@@ -1,0 +1,56 @@
+<!-- app/templates/inventory/search.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Search for a Drug</h1>
+
+    <div class="mt-4 position-relative">
+        <input type="text" id="search_query" class="form-control" placeholder="Type drug name..." onkeyup="searchDrug()">
+        <div id="suggestions" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></div>
+    </div>
+</div>
+
+<!-- Include jQuery for AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function searchDrug() {
+        var search_query = $('#search_query').val();
+
+        // Send the search request if at least 2 characters are typed
+        if (search_query.length >= 2) {
+            $.ajax({
+                url: "{{ url_for('inventory_bp.search_medication') }}",
+                type: 'POST',
+                data: {
+                    search_query: search_query
+                },
+                success: function(response) {
+                    // Display the search results inside the suggestions div
+                    $('#suggestions').html(response).show();
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            $('#suggestions').hide(); // Hide suggestions if less than 2 characters
+        }
+    }
+
+    // Function to handle suggestion click
+    $(document).on('click', '.suggestion-item', function() {
+        var selectedText = $(this).text();
+        $('#search_query').val(selectedText); // Set the input to the selected suggestion
+        $('#suggestions').hide(); // Hide suggestions
+    });
+
+    // Hide suggestions if click outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#suggestions').length && !$(e.target).is('#search_query')) {
+            $('#suggestions').hide();
+        }
+    });
+</script>
+{% endblock %}

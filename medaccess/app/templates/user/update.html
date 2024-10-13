@@ -1,0 +1,28 @@
+<!-- app/templates/user/update.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Edit User</h1>
+
+<form action="{{ url_for('user_bp.update_user', userId=user.userId) }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" id="phone_number" name="phone_number" value="{{ user.phone_number }}" required>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role" required>
+        <option value="customer" {% if user.role == 'customer' %}selected{% endif %}>Customer</option>
+        <option value="pharmacy" {% if user.role == 'pharmacy' %}selected{% endif %}>Pharmacy</option>
+        <option value="supplier" {% if user.role == 'supplier' %}selected{% endif %}>Supplier</option>
+    </select>
+
+    <button type="submit">Update User</button>
+</form>
+
+<a href="{{ url_for('user_bp.get_users') }}">Back to Users List</a>
+{% endblock %}
