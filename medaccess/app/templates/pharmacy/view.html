@@ -1,0 +1,18 @@
+<!-- app/templates/pharmacy/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Pharmacy Details</h1>
+<p><strong>Name:</strong> {{ pharmacy.name }}</p>
+<p><strong>Location:</strong> {{ pharmacy.location }}</p>
+<p><strong>Phone Number:</strong> {{ pharmacy.phone_number }}</p>
+<p><strong>Established Year:</strong> {{ pharmacy.established_year }}</p>
+<p><strong>License Number:</strong> {{ pharmacy.license_number }}</p>
+<p><strong>Owner ID:</strong> {{ pharmacy.owner_id }}</p>
+
+<a href="{{ url_for('pharmacy_bp.update_pharmacy', id=pharmacy.id) }}">Edit Pharmacy</a>
+<form action="{{ url_for('pharmacy_bp.delete_pharmacy', id=pharmacy.id) }}" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?');">Delete Pharmacy</button>
+</form>
+<a href="{{ url_for('pharmacy_bp.get_pharmacies') }}">Back to Pharmacies List</a>
+{% endblock %}

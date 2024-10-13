@@ -1,0 +1,12 @@
+<!-- app/templates/inventory/search_results_partial.html -->
+{% if results %}
+    {% for pharmacy, medication, inventory in results %}
+        <a href="{{ url_for('inventory_bp.pharmacy_details', pharmacy_id=pharmacy.id) }}?medication_id={{ medication.id }}" class="list-group-item list-group-item-action suggestion-item">
+            <strong>{{ medication.name }}</strong> - {{ pharmacy.name }} ({{ inventory.quantity }} available)
+        </a>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-warning suggestion-item" role="alert">
+        No results found.
+    </div>
+{% endif %}

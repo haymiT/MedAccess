@@ -1,0 +1,27 @@
+<!-- app/templates/supplier/update.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Edit Supplier</h1>
+
+<form action="{{ url_for('supplier_bp.update_supplier', id=supplier.id) }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ supplier.name }}" required>
+
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" required>{{ supplier.address }}</textarea>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" id="phone_number" name="phone_number" value="{{ supplier.phone_number }}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ supplier.email }}" required>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" value="{{ supplier.location }}" required>
+
+    <button type="submit">Update Supplier</button>
+</form>
+
+<a href="{{ url_for('supplier_bp.get_suppliers') }}">Back to Suppliers List</a>
+{% endblock %}

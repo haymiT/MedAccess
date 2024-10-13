@@ -1,0 +1,36 @@
+<!-- app/templates/pharmacy/update.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Edit Pharmacy</h1>
+
+<form action="{{ url_for('pharmacy_bp.update_pharmacy', id=pharmacy.id) }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ pharmacy.name }}" required>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" value="{{ pharmacy.location }}" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" id="phone_number" name="phone_number" value="{{ pharmacy.phone_number }}" required>
+
+    <label for="established_year">Established Year:</label>
+    <input type="number" id="established_year" name="established_year" value="{{ pharmacy.established_year }}" required>
+
+    <label for="license_number">License Number:</label>
+    <input type="text" id="license_number" name="license_number" value="{{ pharmacy.license_number }}" required>
+
+    <label for="owner_id">Owner:</label>
+    <select id="owner_id" name="owner_id" required>
+        {% for user in users %}
+            <option value="{{ user.userId }}" {% if user.userId == pharmacy.owner_id %}selected{% endif %}>
+                {{ user.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Update Pharmacy</button>
+</form>
+
+<a href="{{ url_for('pharmacy_bp.get_pharmacies') }}">Back to Pharmacies List</a>
+{% endblock %}

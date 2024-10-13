@@ -1,0 +1,35 @@
+<!-- app/templates/user/index.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>All Users</h1>
+<a href="{{ url_for('user_bp.create_user') }}">Create New User</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone_number }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <a href="{{ url_for('user_bp.get_user', userId=user.userId) }}">View</a>
+                <a href="{{ url_for('user_bp.update_user', userId=user.userId) }}">Edit</a>
+                <form action="{{ url_for('user_bp.delete_user', userId=user.userId) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

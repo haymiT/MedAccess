@@ -1,0 +1,16 @@
+<!-- app/templates/medication/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Medication Details</h1>
+<p><strong>Name:</strong> {{ medication.name }}</p>
+<p><strong>Description:</strong> {{ medication.description }}</p>
+<p><strong>Category:</strong> {{ medication.category }}</p>
+<p><strong>Dosage:</strong> {{ medication.dosage }}</p>
+
+<a href="{{ url_for('medication_bp.update_medication', id=medication.id) }}">Edit Medication</a>
+<form action="{{ url_for('medication_bp.delete_medication', id=medication.id) }}" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?');">Delete Medication</button>
+</form>
+<a href="{{ url_for('medication_bp.get_medications') }}">Back to Medications List</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- app/templates/consumer/create.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Create New Consumer</h1>
+
+<form action="{{ url_for('consumer_bp.create_consumer') }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" id="phone_number" name="phone_number" required>
+
+    <button type="submit">Create Consumer</button>
+</form>
+
+<a href="{{ url_for('consumer_bp.get_consumers') }}">Back to Consumers List</a>
+{% endblock %}

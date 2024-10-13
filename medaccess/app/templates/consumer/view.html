@@ -1,0 +1,15 @@
+<!-- app/templates/consumer/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Consumer Details</h1>
+<p><strong>Name:</strong> {{ consumer.name }}</p>
+<p><strong>Email:</strong> {{ consumer.email }}</p>
+<p><strong>Phone Number:</strong> {{ consumer.phone_number }}</p>
+
+<a href="{{ url_for('consumer_bp.update_consumer', id=consumer.id) }}">Edit Consumer</a>
+<form action="{{ url_for('consumer_bp.delete_consumer', id=consumer.id) }}" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?');">Delete Consumer</button>
+</form>
+<a href="{{ url_for('consumer_bp.get_consumers') }}">Back to Consumers List</a>
+{% endblock %}

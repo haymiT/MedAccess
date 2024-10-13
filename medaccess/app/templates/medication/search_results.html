@@ -1,0 +1,20 @@
+<!-- app/templates/medication/search_results.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Search Results</h1>
+
+{% if medications %}
+    <ul>
+    {% for medication in medications %}
+        <li>
+            <a href="{{ url_for('medication_bp.view_medication', medication_id=medication.id) }}">
+                {{ medication.name }} - {{ medication.category }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No medications found.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+<!-- app/templates/inventory/view.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Inventory Item Details</h1>
+
+    <div class="card p-4 shadow-sm bg-white rounded">
+        <h3 class="card-title">{{ medication.name }}</h3>
+        <p class="card-text"><strong>Pharmacy:</strong> {{ pharmacy.name }}</p>
+        <p class="card-text"><strong>Location:</strong> {{ pharmacy.location }}</p>
+        <p class="card-text"><strong>Phone Number:</strong> {{ pharmacy.phone_number }}</p>
+        <hr>
+
+        <p class="card-text"><strong>Quantity:</strong> {{ inventory_item.quantity }}</p>
+        <p class="card-text"><strong>Unit Price:</strong> ${{ inventory_item.unit_price }}</p>
+        <p class="card-text"><strong>Manufacturer:</strong> {{ inventory_item.manufacturer }}</p>
+        <p class="card-text"><strong>Manufacturing Date:</strong> {{ inventory_item.manufacturing_date }}</p>
+        <p class="card-text"><strong>Expiration Date:</strong> {{ inventory_item.expiration_date }}</p>
+        <p class="card-text"><strong>Shelf Number:</strong> {{ inventory_item.shelf_number }}</p>
+        <p class="card-text"><strong>Dosage Unit:</strong> {{ inventory_item.dosage_unit }}</p>
+        <p class="card-text"><strong>Dosage Value:</strong> {{ inventory_item.dosage_value }} {{ inventory_item.dosage_unit }}</p>
+        <p class="card-text"><strong>Bin Card:</strong> {{ inventory_item.bin_card }}</p>
+        <p class="card-text"><strong>Score Card:</strong> {{ inventory_item.score_card }}</p>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('inventory_bp.get_inventory_items') }}" class="btn btn-secondary">Back to Inventory List</a>
+        <a href="{{ url_for('inventory_bp.update_inventory_item', inventory_id=inventory_item.inventory_id) }}" class="btn btn-primary">Edit Inventory Item</a>
+    </div>
+</div>
+{% endblock %}

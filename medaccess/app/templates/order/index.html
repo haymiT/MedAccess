@@ -1,0 +1,35 @@
+<!-- app/templates/order/index.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>All Orders</h1>
+<a href="{{ url_for('order_bp.create_order') }}">Create New Order</a>
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.item_name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.order_status }}</td>
+            <td>
+                <a href="{{ url_for('order_bp.get_order', order_id=order.order_id) }}">View</a>
+                <a href="{{ url_for('order_bp.update_order', order_id=order.order_id) }}">Edit</a>
+                <form action="{{ url_for('order_bp.delete_order', order_id=order.order_id) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

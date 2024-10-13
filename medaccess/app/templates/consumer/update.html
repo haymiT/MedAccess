@@ -1,0 +1,21 @@
+<!-- app/templates/consumer/update.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Edit Consumer</h1>
+
+<form action="{{ url_for('consumer_bp.update_consumer', id=consumer.id) }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ consumer.name }}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ consumer.email }}" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" id="phone_number" name="phone_number" value="{{ consumer.phone_number }}" required>
+
+    <button type="submit">Update Consumer</button>
+</form>
+
+<a href="{{ url_for('consumer_bp.get_consumers') }}">Back to Consumers List</a>
+{% endblock %}
