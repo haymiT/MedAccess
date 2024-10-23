@@ -16,7 +16,9 @@ def get_users():
 @user_bp.route('/users/<int:userId>', methods=['GET'])
 def get_user(userId):
     user = User.query.get_or_404(userId)
-    return render_template('user/view.html', user=user)
+    usr = user.to_dict()
+    return jsonify(usr)
+#return render_template('user/view.html', user=user)
 
 # Create a new user
 @user_bp.route('/users/new', methods=['GET', 'POST'])
