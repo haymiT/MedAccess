@@ -8,7 +8,9 @@ user_bp = Blueprint('user_bp', __name__)
 @user_bp.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    return render_template('user/index.html', users=users)
+    allUser = [user.todictt() for user in users]
+    return jsonify(allUser)
+    # return render_template('user/index.html', users=users)
 
 # Get a single user by userId
 @user_bp.route('/users/<int:userId>', methods=['GET'])
@@ -22,12 +24,14 @@ def create_user():
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
+        password = request.form['password']
         phone_number = request.form['phone_number']
         role = request.form['role']
 
         new_user = User(
             name=name,
             email=email,
+            password=password,
             phone_number=phone_number,
             role=role
         )
