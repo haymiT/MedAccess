@@ -23,3 +23,12 @@ class Medication(db.Model):
 
     def __repr__(self):
         return f"<Medication {self.name}, Category: {self.category}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'category': self.category,
+            'dosage': self.dosage
+        }
