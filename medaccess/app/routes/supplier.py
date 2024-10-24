@@ -8,13 +8,18 @@ supplier_bp = Blueprint('supplier_bp', __name__)
 @supplier_bp.route('/suppliers', methods=['GET'])
 def get_suppliers():
     suppliers = Supplier.query.all()
+    all_supplier = [sup.to_dict() for sup in suppliers]
+    return jsonify(all_supplier)
     return render_template('supplier/index.html', suppliers=suppliers)
 
 # Get a single supplier by ID
+from flask import jsonify
 @supplier_bp.route('/suppliers/<int:id>', methods=['GET'])
 def get_supplier(id):
     supplier = Supplier.query.get_or_404(id)
-    return render_template('supplier/view.html', supplier=supplier)
+    sup = supplier.to_dict()
+    return jsonify(sup)
+    #return render_template('supplier/view.html', supplier=supplier)
 
 # Create a new supplier
 @supplier_bp.route('/suppliers/new', methods=['GET', 'POST'])
