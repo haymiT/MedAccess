@@ -26,3 +26,22 @@ class Inventory(db.Model):
 
     def __repr__(self):
         return f"<Inventory {self.inventory_id}: {self.quantity} units of {self.medication.name} from {self.manufacturer}>"
+
+    def to_dict(self):
+        return {
+            'inventory_id': self.inventory_id,
+            'pharmacy_id': self.pharmacy_id,
+            'medication_id': self.medication_id,
+            'quantity': self.quantity,
+            'unit_price': str(self.unit_price),
+            'manufacturer': self.manufacturer,
+            'manufacturing_date': str(self.manufacturing_date),
+            'expiration_date': str(self.expiration_date),
+            'shelf_number': self.shelf_number,
+            'created_at': str(self.created_at),
+            'updated_at': str(self.updated_at),
+            'bin_card': self.bin_card,
+            'score_card': self.score_card,
+            'dosage_unit': self.dosage_unit,
+            'dosage_value': self.dosage_value
+        }
