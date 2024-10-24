@@ -8,13 +8,17 @@ pharmacy_bp = Blueprint('pharmacy_bp', __name__)
 @pharmacy_bp.route('/pharmacies', methods=['GET'])
 def get_pharmacies():
     pharmacies = Pharmacy.query.all()
-    return render_template('pharmacy/index.html', pharmacies=pharmacies)
+    all_pharmacy= [phar.to_dict() for phar in pharmacies]
+    return jsonify(all_pharmacy)
+    # return render_template('pharmacy/index.html', pharmacies=pharmacies)
 
 # Get a single pharmacy by ID
 @pharmacy_bp.route('/pharmacies/<int:id>', methods=['GET'])
 def get_pharmacy(id):
     pharmacy = Pharmacy.query.get_or_404(id)
-    return render_template('pharmacy/view.html', pharmacy=pharmacy)
+    pharm = pharmacy.to_dict()
+    return jsonify(pharm)
+    # return render_template('pharmacy/view.html', pharmacy=pharmacy)
 
 # Create a new pharmacy
 @pharmacy_bp.route('/pharmacies/new', methods=['GET', 'POST'])
