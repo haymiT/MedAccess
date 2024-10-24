@@ -17,3 +17,14 @@ class Pharmacy(db.Model):
 
     def __repr__(self):
         return f"<Pharmacy {self.name}, Owner ID: {self.owner_id}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'location': self.location,
+            'phone_number': self.phone_number,
+            'established_year': self.established_year,
+            'license_number': self.license_number,
+            'owner_id': self.owner_id
+        }
