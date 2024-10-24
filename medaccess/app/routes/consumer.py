@@ -1,6 +1,7 @@
 # app/routes/consumer.py
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from app.models import db, Consumer
+from flask import jsonify
 
 consumer_bp = Blueprint('consumer_bp', __name__)
 
@@ -8,13 +9,17 @@ consumer_bp = Blueprint('consumer_bp', __name__)
 @consumer_bp.route('/consumers', methods=['GET'])
 def get_consumers():
     consumers = Consumer.query.all()
-    return render_template('consumer/index.html', consumers=consumers)
+    all_consumers = [con.to_dict() for con in consumers]
+    return jsonify(all_consumers)
+    # return render_template('consumer/index.html', consumers=consumers)
 
 # Get a single consumer by ID
 @consumer_bp.route('/consumers/<int:id>', methods=['GET'])
 def get_consumer(id):
     consumer = Consumer.query.get_or_404(id)
-    return render_template('consumer/view.html', consumer=consumer)
+    con = consumer.to_dict()
+    return jsonify(con)
+    # return render_template('consumer/view.html', consumer=consumer)
 
 # Create a new consumer
 @consumer_bp.route('/consumers/new', methods=['GET', 'POST'])
