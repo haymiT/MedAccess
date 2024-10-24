@@ -8,13 +8,17 @@ order_bp = Blueprint('order_bp', __name__)
 @order_bp.route('/orders', methods=['GET'])
 def get_orders():
     orders = Order.query.all()
-    return render_template('order/index.html', orders=orders)
+    all_orders= [order.to_dict() for order in orders]
+    return jsonify(all_orders)
+    # return render_template('order/index.html', orders=orders)
 
 # Get a single order by order_id
 @order_bp.route('/orders/<string:order_id>', methods=['GET'])
 def get_order(order_id):
     order = Order.query.filter_by(order_id=order_id).first_or_404()
-    return render_template('order/view.html', order=order)
+    ord = order.to_dict()
+    return jsonify(ord)
+    # return render_template('order/view.html', order=order)
 
 # Create a new order
 @order_bp.route('/orders/new', methods=['GET', 'POST'])
