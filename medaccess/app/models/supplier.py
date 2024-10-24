@@ -13,3 +13,13 @@ class Supplier(db.Model):
 
     def __repr__(self):
         return f"<Supplier {self.name}, Location: {self.location}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'phone_number': self.phone_number,
+            'email': self.email,
+            'location': self.location
+        }
