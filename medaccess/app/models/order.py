@@ -30,3 +30,15 @@ class Order(db.Model):
 
     def __repr__(self):
         return f"<Order {self.order_id}: {self.item_name} x {self.quantity}, Status: {self.order_status}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'order_id': self.order_id,
+            'pharmacy_id': self.pharmacy_id,
+            'supplier_id': self.supplier_id,
+            'order_date': self.order_date,
+            'order_status': self.order_status,
+            'item_name': self.item_name,
+            'quantity': self.quantity
+        }
