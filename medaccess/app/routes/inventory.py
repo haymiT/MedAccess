@@ -1,6 +1,7 @@
 # app/routes/inventory.py
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from app.models import db, Inventory, Pharmacy, Medication
+from flask import jsonify
 
 inventory_bp = Blueprint('inventory_bp', __name__)
 
@@ -8,19 +9,26 @@ inventory_bp = Blueprint('inventory_bp', __name__)
 @inventory_bp.route('/inventory', methods=['GET'])
 def get_inventory_items():
     inventory_items = Inventory.query.all()
-    return render_template('inventory/index.html', inventory_items=inventory_items)
+    all_inventory_items = [inv.to_dict() for inv in inventory_items]
+    return jsonify(all_inventory_items)
+    # return render_template('inventory/index.html', inventory_items=inventory_items)
 
 # Get a single inventory item by inventory_id
 @inventory_bp.route('/inventory/<int:inventory_id>', methods=['GET'])
 def get_inventory_item(inventory_id):
     # Fetch the inventory item based on its ID
     inventory_item = Inventory.query.get_or_404(inventory_id)
+    inv = inventory_item.to_dict()
+    
 
     # Fetch related pharmacy and medication for display
     pharmacy = Pharmacy.query.get(inventory_item.pharmacy_id)
+    pharm=pharmacy.to_dict()
     medication = Medication.query.get(inventory_item.medication_id)
+    med=medication.to_dict()
+    return jsonify(inv, pharm, med)
 
-    return render_template('inventory/view.html', inventory_item=inventory_item, pharmacy=pharmacy, medication=medication)
+    # return render_template('inventory/view.html', inventory_item=inventory_item, pharmacy=pharmacy, medication=medication)
 
 
 # Create a new inventory item
