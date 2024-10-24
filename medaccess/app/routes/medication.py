@@ -1,6 +1,7 @@
 # app/routes/medication.py
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from app.models import db, Medication
+from flask import jsonify
 
 medication_bp = Blueprint('medication_bp', __name__)
 
@@ -8,13 +9,19 @@ medication_bp = Blueprint('medication_bp', __name__)
 @medication_bp.route('/medications', methods=['GET'])
 def get_medications():
     medications = Medication.query.all()
-    return render_template('medication/index.html', medications=medications)
+    all_medications = [med.to_dict() for med in medications]
+    return jsonify(all_medications)
+
+    # return render_template('medication/index.html', medications=medications)
 
 # Get a single medication by ID
 @medication_bp.route('/medications/<int:id>', methods=['GET'])
 def get_medication(id):
     medication = Medication.query.get_or_404(id)
-    return render_template('medication/view.html', medication=medication)
+    med = medication.to_dict()
+    return jsonify(med)
+
+    # return render_template('medication/view.html', medication=medication)
 
 # Create a new medication
 @medication_bp.route('/medications/new', methods=['GET', 'POST'])
