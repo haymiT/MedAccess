@@ -1,0 +1,21 @@
+# to create a seel
+curl -X POST http://localhost:5000/sell -H "Content-Type: application/json" -d '{
+  "user_id": 1,
+  "items": [
+    {
+      "inventory_id": 6,
+      "quantity": 5
+    },
+    {
+      "inventory_id": 7,
+      "quantity": 3
+    }
+  ]
+}'
+{
+  "message": "Sale completed successfully",
+  "sale_id": 2
+}
+
+# to view sold drugs
+http://127.0.0.1:5000/sell/sell_item_id/receipt

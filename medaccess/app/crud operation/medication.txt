@@ -1,0 +1,14 @@
+# to add medication item
+curl -X POST http://localhost:5000/medications/new \
+-H "Content-Type: application/json" \
+-d '{"name": "paracetamol", "description": "Pain headache", "category": "Anti pain drugs", "dosage": "200mg"}'
+
+
+#to update medication item
+curl -X POST http://localhost:5000/medications/1/edit \
+-H "Content-Type: application/json" \
+-d '{"name": "Updated Ibuprofen", "description": "Updated pain reliever", "category": "Anti pain drugs", "dosage": "400mg"}'
+
+# to delete mediaction item
+
+curl -X POST http://localhost:5000/medications/1/delete

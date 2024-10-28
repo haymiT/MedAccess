@@ -1,0 +1,34 @@
+#to get all orders
+curl -X GET http://localhost:5000/orders
+
+#to get a single orders
+curl -X GET http://localhost:5000/orders/order_id
+
+#to create a new orders
+curl -X POST http://localhost:5000/orders/new \
+     -H "Content-Type: application/json" \
+     -d '{
+           "order_id": "1",
+           "pharmacy_id": "2",
+           "supplier_id": "1",
+           "order_date": "2023-10-01",
+           "order_status": "Pending",
+           "item_name": "Medication A",
+           "quantity": 10
+         }'
+
+#to update an existing order using order_id
+
+curl -X POST http://localhost:5000/orders/order_id/edit \
+     -H "Content-Type: application/json" \
+     -d '{
+           "pharmacy_id": "1",
+           "supplier_id": "2",
+           "order_date": "2023-10-02",
+           "order_status": "Shipped",
+           "item_name": "Medication B",
+           "quantity": 20
+         }'
+
+#to delete an order
+curl -X POST http://localhost:5000/orders/order_id/delete

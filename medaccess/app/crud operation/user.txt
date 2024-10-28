@@ -1,0 +1,38 @@
+#to get all user
+curl -X GET http://localhost:5000/users
+
+#to get a single user using user_id
+curl -X GET http://localhost:5000/users/user_id
+
+#to create a new user
+curl -X POST http://localhost:5000/users/new \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "Berekete Tena",
+           "email": "bk3tena@gmail.com",
+           "password": "password123",
+           "phone_number": "1234567890",
+           "role": "pharmacy"
+         }'
+
+#to update an existing user using user_id
+curl -X POST http://localhost:5000/users/user_id/edit \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "Elsabet Tena",
+           "email": "bekitena34.com",
+           "phone_number": "0987654321",
+           "role": "supplier"
+         }'
+
+#Delete a user
+curl -X POST http://localhost:5000/users/user_id/delete
+
+#to view filter users by role
+curl -X GET http://localhost:5000/users/role/pharmacy
+
+#to filter users by email
+curl -X GET http://localhost:5000/users/email/user_email
+
+#to filter users by phone phone_number
+curl -X GET http://localhost:5000/users/phone/user_phone_number

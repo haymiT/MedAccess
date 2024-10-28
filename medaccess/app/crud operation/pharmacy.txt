@@ -1,0 +1,34 @@
+#to get all pharmacy_id
+curl -X GET http://localhost:5000/pharmacies
+
+# to get a single using pharmacy_id
+curl -X GET http://localhost:5000/pharmacies/pharmacy_id
+
+#to create a new pharmacy_id
+curl -X POST http://localhost:5000/pharmacies/new \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "Sas",
+           "location": "Meskel Flower",
+           "phone_number": "1234567890",
+           "established_year": "2023",
+           "license_number": "LIC123457",
+           "owner_id": 1
+         }'
+
+#to update existing pharmacy using pharmacy_id
+
+curl -X POST http://localhost:5000/pharmacies/pharmacy_id/edit \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "updated sas",
+           "location": "Updated Location",
+           "phone_number": "0987654321",
+           "established_year": "2024",
+           "license_number": "LIC654321",
+           "owner_id": 1
+         }'
+
+#to delete pharmacy using pharmacy_id
+
+curl -X POST http://localhost:5000/pharmacies/pharmacy_id/delete
