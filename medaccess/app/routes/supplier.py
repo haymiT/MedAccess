@@ -10,7 +10,7 @@ def get_suppliers():
     suppliers = Supplier.query.all()
     all_supplier = [sup.to_dict() for sup in suppliers]
     return jsonify(all_supplier)
-    return render_template('supplier/index.html', suppliers=suppliers)
+    # return render_template('supplier/index.html', suppliers=suppliers)
 
 # Get a single supplier by ID
 from flask import jsonify
@@ -25,11 +25,13 @@ def get_supplier(id):
 @supplier_bp.route('/suppliers/new', methods=['GET', 'POST'])
 def create_supplier():
     if request.method == 'POST':
-        name = request.form['name']
-        address = request.form['address']
-        phone_number = request.form['phone_number']
-        email = request.form['email']
-        location = request.form['location']
+        data = request.get_json() if request.is_json else request.form
+        
+        name = data.get('name')
+        address = data.get('address')
+        phone_number = data.get('phone_number')
+        email = data.get('email')
+        location = data.get('location')
 
         new_supplier = Supplier(
             name=name,
@@ -42,13 +44,12 @@ def create_supplier():
         try:
             db.session.add(new_supplier)
             db.session.commit()
-            flash('Supplier created successfully!', 'success')
-            return redirect(url_for('supplier_bp.get_suppliers'))
+            return jsonify({'message': 'Supplier created successfully!'}), 201
         except Exception as e:
             db.session.rollback()
-            flash(f'Error creating supplier: {e}', 'danger')
+            return jsonify({'error': f'Error creating supplier: {e}'}), 500
 
-    return render_template('supplier/create.html')
+    return jsonify({'error': 'Invalid request method'}), 405
 
 # Update an existing supplier
 @supplier_bp.route('/suppliers/<int:id>/edit', methods=['GET', 'POST'])
@@ -56,21 +57,22 @@ def update_supplier(id):
     supplier = Supplier.query.get_or_404(id)
     
     if request.method == 'POST':
-        supplier.name = request.form['name']
-        supplier.address = request.form['address']
-        supplier.phone_number = request.form['phone_number']
-        supplier.email = request.form['email']
-        supplier.location = request.form['location']
+        data = request.get_json() if request.is_json else request.form
+        
+        supplier.name = data.get('name')
+        supplier.address = data.get('address')
+        supplier.phone_number = data.get('phone_number')
+        supplier.email = data.get('email')
+        supplier.location = data.get('location')
 
         try:
             db.session.commit()
-            flash('Supplier updated successfully!', 'success')
-            return redirect(url_for('supplier_bp.get_suppliers'))
+            return jsonify({'message': 'Supplier updated successfully!'}), 200
         except Exception as e:
             db.session.rollback()
-            flash(f'Error updating supplier: {e}', 'danger')
+            return jsonify({'error': f'Error updating supplier: {e}'}), 500
 
-    return render_template('supplier/update.html', supplier=supplier)
+    return jsonify(supplier.to_dict()), 200
 
 # Delete a supplier
 @supplier_bp.route('/suppliers/<int:id>/delete', methods=['POST'])
@@ -80,9 +82,7 @@ def delete_supplier(id):
     try:
         db.session.delete(supplier)
         db.session.commit()
-        flash('Supplier deleted successfully!', 'success')
+        return jsonify({'message': 'Supplier deleted successfully!'}), 200
     except Exception as e:
         db.session.rollback()
-        flash(f'Error deleting supplier: {e}', 'danger')
-
-    return redirect(url_for('supplier_bp.get_suppliers'))
+        return jsonify({'error': f'Error deleting supplier: {e}'}), 500
