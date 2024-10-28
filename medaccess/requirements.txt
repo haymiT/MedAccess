@@ -17,6 +17,7 @@ MarkupSafe==2.1.5
 packaging==24.1
 pycparser==2.22
 PyMySQL==1.0.2
+python-dotenv==1.0.1
 SQLAlchemy==2.0.35
 typing-extensions==4.12.2
 werkzeug==3.0.4
