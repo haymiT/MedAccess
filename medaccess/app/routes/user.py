@@ -20,6 +20,7 @@ def get_user(userId):
     return jsonify(usr)
 #return render_template('user/view.html', user=user)
 
+import bcrypt
 # Create a new user
 @user_bp.route('/users/new', methods=['GET', 'POST'])
 def create_user():
@@ -32,10 +33,13 @@ def create_user():
         phone_number = data.get('phone_number')
         role = data.get('role')
 
+        # Encrypt the password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
         new_user = User(
             name=name,
             email=email,
-            password=password,
+            password=hashed_password.decode('utf-8'),
             phone_number=phone_number,
             role=role
         )
@@ -64,6 +68,7 @@ def create_user():
     return jsonify({'error': 'Invalid request method'}), 405
 
 
+import bcrypt
 # Update an existing user
 @user_bp.route('/users/<int:userId>/edit', methods=['GET', 'POST'])
 def update_user(userId):
@@ -74,10 +79,43 @@ def update_user(userId):
         user.name = data.get('name')
         user.email = data.get('email')
         user.phone_number = data.get('phone_number')
-        user.role = data.get('role')
-        
+        new_role = data.get('role')
+        old_role = user.role
+
+        # Encrypt the password if it is being updated
+        if 'password' in data:
+            user.password = bcrypt.hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
         try:
+            user.role = new_role
             db.session.commit()
+
+            # If the user role is 'supplier', insert or update the suppliers table
+            if new_role == 'supplier':
+                supplier = Supplier.query.filter_by(email=user.email).first()
+                if supplier:
+                    supplier.name = user.name
+                    supplier.phone_number = user.phone_number
+                    supplier.email = user.email
+                    supplier.address = 'Default Address'  # Modify as needed
+                    supplier.location = 'Default Location'  # Modify as needed
+                else:
+                    new_supplier = Supplier(
+                        name=user.name,
+                        address='Default Address',  # Modify as needed
+                        phone_number=user.phone_number,
+                        email=user.email,
+                        location='Default Location'  # Modify as needed
+                    )
+                    db.session.add(new_supplier)
+                db.session.commit()
+            elif old_role == 'supplier' and new_role != 'supplier':
+                # If the role changed from 'supplier' to another role, delete from suppliers table
+                supplier = Supplier.query.filter_by(email=user.email).first()
+                if supplier:
+                    db.session.delete(supplier)
+                    db.session.commit()
+
             return jsonify({'message': 'User updated successfully!'}), 200
         except Exception as e:
             db.session.rollback()
