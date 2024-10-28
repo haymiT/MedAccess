@@ -8,7 +8,7 @@ user_bp = Blueprint('user_bp', __name__)
 @user_bp.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    allUser = [user.todictt() for user in users]
+    allUser = [user.to_dict() for user in users]
     return jsonify(allUser)
     # return render_template('user/index.html', users=users)
 
@@ -85,3 +85,24 @@ def delete_user(userId):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f'Error deleting user: {e}'}), 500
+    
+# Filter users by role
+@user_bp.route('/users/role/<string:role>', methods=['GET'])
+def filter_users_by_role(role):
+    users = User.query.filter_by(role=role).all()
+    filtered_users = [user.to_dict() for user in users]
+    return jsonify(filtered_users), 200
+
+# Filter users by email
+@user_bp.route('/users/email/<string:email>', methods=['GET'])
+def filter_users_by_email(email):
+    users = User.query.filter_by(email=email).all()
+    filtered_users = [user.to_dict() for user in users]
+    return jsonify(filtered_users), 200
+
+# Filter users by phone number
+@user_bp.route('/users/phone/<string:phone_number>', methods=['GET'])
+def filter_users_by_phone(phone_number):
+    users = User.query.filter_by(phone_number=phone_number).all()
+    filtered_users = [user.to_dict() for user in users]
+    return jsonify(filtered_users), 200 
