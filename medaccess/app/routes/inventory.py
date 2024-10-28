@@ -35,18 +35,20 @@ def get_inventory_item(inventory_id):
 @inventory_bp.route('/inventory/new', methods=['GET', 'POST'])
 def create_inventory_item():
     if request.method == 'POST':
-        pharmacy_id = request.form['pharmacy_id']
-        medication_id = request.form['medication_id']
-        quantity = request.form['quantity']
-        unit_price = request.form['unit_price']
-        manufacturer = request.form['manufacturer']
-        manufacturing_date = request.form['manufacturing_date']
-        expiration_date = request.form['expiration_date']
-        shelf_number = request.form['shelf_number']
-        bin_card = request.form.get('bin_card', None)  # Use get() to handle optional fields
-        score_card = request.form.get('score_card', None)  # Use get() to handle optional fields
-        dosage_unit = request.form['dosage_unit']  # New field for dosage unit
-        dosage_value = request.form['dosage_value']  # New field for dosage value
+        data = request.get_json() if request.is_json else request.form
+        
+        pharmacy_id = data.get('pharmacy_id')
+        medication_id = data.get('medication_id')
+        quantity = data.get('quantity')
+        unit_price = data.get('unit_price')
+        manufacturer = data.get('manufacturer')
+        manufacturing_date = data.get('manufacturing_date')
+        expiration_date = data.get('expiration_date')
+        shelf_number = data.get('shelf_number')
+        bin_card = data.get('bin_card', None)  # Use get() to handle optional fields
+        score_card = data.get('score_card', None)  # Use get() to handle optional fields
+        dosage_unit = data.get('dosage_unit')  # New field for dosage unit
+        dosage_value = data.get('dosage_value')  # New field for dosage value
 
         new_inventory_item = Inventory(
             pharmacy_id=pharmacy_id,
@@ -66,17 +68,21 @@ def create_inventory_item():
         try:
             db.session.add(new_inventory_item)
             db.session.commit()
-            flash('Inventory item created successfully!', 'success')
-            return redirect(url_for('inventory_bp.get_inventory_items'))  # Redirect to inventory list
+            return jsonify({'message': 'Inventory item created successfully!'}), 201
         except Exception as e:
             db.session.rollback()
-            flash(f'Error creating inventory item: {e}', 'danger')
+            return jsonify({'error': f'Error creating inventory item: {e}'}), 500
 
     # Get all pharmacies and medications for dropdowns
     pharmacies = Pharmacy.query.all()
     medications = Medication.query.all()
     
-    return render_template('inventory/create.html', pharmacies=pharmacies, medications=medications)
+    return jsonify({
+        'pharmacies': [pharmacy.to_dict() for pharmacy in pharmacies],
+        'medications': [medication.to_dict() for medication in medications]
+    }), 200
+
+
 # Update an existing inventory item
 @inventory_bp.route('/inventory/<int:inventory_id>/edit', methods=['GET', 'POST'])
 def update_inventory_item(inventory_id):
@@ -84,33 +90,39 @@ def update_inventory_item(inventory_id):
     inventory_item = Inventory.query.get_or_404(inventory_id)
 
     if request.method == 'POST':
+        data = request.get_json() if request.is_json else request.form
+        
         # Update fields with new values from the form
-        inventory_item.pharmacy_id = request.form['pharmacy_id']
-        inventory_item.medication_id = request.form['medication_id']
-        inventory_item.quantity = request.form['quantity']
-        inventory_item.unit_price = request.form['unit_price']
-        inventory_item.manufacturer = request.form['manufacturer']
-        inventory_item.manufacturing_date = request.form['manufacturing_date']
-        inventory_item.expiration_date = request.form['expiration_date']
-        inventory_item.shelf_number = request.form['shelf_number']
-        inventory_item.bin_card = request.form.get('bin_card', None)
-        inventory_item.score_card = request.form.get('score_card', None)
-        inventory_item.dosage_unit = request.form['dosage_unit']  # Updated dosage unit
-        inventory_item.dosage_value = request.form['dosage_value']  # Updated dosage value
+        inventory_item.pharmacy_id = data.get('pharmacy_id')
+        inventory_item.medication_id = data.get('medication_id')
+        inventory_item.quantity = data.get('quantity')
+        inventory_item.unit_price = data.get('unit_price')
+        inventory_item.manufacturer = data.get('manufacturer')
+        inventory_item.manufacturing_date = data.get('manufacturing_date')
+        inventory_item.expiration_date = data.get('expiration_date')
+        inventory_item.shelf_number = data.get('shelf_number')
+        inventory_item.bin_card = data.get('bin_card', None)
+        inventory_item.score_card = data.get('score_card', None)
+        inventory_item.dosage_unit = data.get('dosage_unit')  # Updated dosage unit
+        inventory_item.dosage_value = data.get('dosage_value')  # Updated dosage value
 
         try:
             db.session.commit()  # Commit the changes to the database
-            flash('Inventory item updated successfully!', 'success')
-            return redirect(url_for('inventory_bp.get_inventory_items'))  # Redirect to inventory list
+            return jsonify({'message': 'Inventory item updated successfully!'}), 200
         except Exception as e:
             db.session.rollback()
-            flash(f'Error updating inventory item: {e}', 'danger')
+            return jsonify({'error': f'Error updating inventory item: {e}'}), 500
 
     # Fetch all pharmacies and medications for dropdowns
     pharmacies = Pharmacy.query.all()
     medications = Medication.query.all()
     
-    return render_template('inventory/update.html', inventory_item=inventory_item, pharmacies=pharmacies, medications=medications)
+    return jsonify({
+        'inventory_item': inventory_item.to_dict(),
+        'pharmacies': [pharmacy.to_dict() for pharmacy in pharmacies],
+        'medications': [medication.to_dict() for medication in medications]
+    }), 200
+
 
 # Delete an inventory item
 @inventory_bp.route('/inventory/<int:inventory_id>/delete', methods=['POST'])
@@ -120,13 +132,10 @@ def delete_inventory_item(inventory_id):
     try:
         db.session.delete(inventory_item)
         db.session.commit()
-        flash('Inventory item deleted successfully!', 'success')
+        return jsonify({'message': 'Inventory item deleted successfully!'}), 200
     except Exception as e:
         db.session.rollback()
-        flash(f'Error deleting inventory item: {e}', 'danger')
-
-    return redirect(url_for('inventory_bp.get_inventory_items'))  # Corrected endpoint
-
+        return jsonify({'error': f'Error deleting inventory item: {e}'}), 500
 
 
 @inventory_bp.route('/inventory/search', methods=['GET', 'POST'])
@@ -140,11 +149,19 @@ def search_medication():
             .join(Medication, Inventory.medication_id == Medication.id)\
             .filter(Medication.name.ilike(f"{search_query}%")).distinct().all()
 
-        # Render the partial results for the modal
-        return render_template('inventory/search_results_partial.html', results=results)
+        # Convert results to a list of dictionaries
+        results_list = [
+            {
+                'pharmacy': pharmacy.to_dict(),
+                'medication': medication.to_dict(),
+                'inventory': inventory.to_dict()
+            }
+            for pharmacy, medication, inventory in results
+        ]
 
-    return render_template('inventory/search.html')  # Default if no search query is provided
+        return jsonify(results_list), 200
 
+    return jsonify({'error': 'No search query provided'}), 400
 
 
 @inventory_bp.route('/pharmacy/<int:pharmacy_id>', methods=['GET'])
@@ -165,5 +182,17 @@ def pharmacy_details(pharmacy_id):
             .join(Medication, Inventory.medication_id == Medication.id)\
             .filter(Inventory.pharmacy_id == pharmacy_id).all()
 
-    return render_template('inventory/pharmacy_details.html', pharmacy=pharmacy, drugs=drugs)
+    # Convert results to a list of dictionaries
+    drugs_list = [
+        {
+            'inventory': inventory.to_dict(),
+            'medication': medication.to_dict()
+        }
+        for inventory, medication in drugs
+    ]
+
+    return jsonify({
+        'pharmacy': pharmacy.to_dict(),
+        'drugs': drugs_list
+    }), 200
 
