@@ -13,7 +13,8 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.name} (Role: {self.role})>"
-    def todictt(self):
+    
+    def to_dict(self):
         return {
             'userId': self.userId,
             'name': self.name,
