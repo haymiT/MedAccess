@@ -19,16 +19,19 @@ def get_user(userId):
     usr = user.to_dict()
     return jsonify(usr)
 #return render_template('user/view.html', user=user)
+from flask import jsonify
 
 # Create a new user
 @user_bp.route('/users/new', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        phone_number = request.form['phone_number']
-        role = request.form['role']
+        data = request.get_json() if request.is_json else request.form
+        
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        phone_number = data.get('phone_number')
+        role = data.get('role')
 
         new_user = User(
             name=name,
@@ -41,33 +44,34 @@ def create_user():
         try:
             db.session.add(new_user)
             db.session.commit()
-            flash('User created successfully!', 'success')
-            return redirect(url_for('user_bp.get_users'))
+            return jsonify({'message': 'User created successfully!'}), 201
         except Exception as e:
             db.session.rollback()
-            flash(f'Error creating user: {e}', 'danger')
+            return jsonify({'error': f'Error creating user: {e}'}), 500
 
-    return render_template('user/create.html')
+    return jsonify({'error': 'Invalid request method'}), 405
+
 
 # Update an existing user
 @user_bp.route('/users/<int:userId>/edit', methods=['GET', 'POST'])
 def update_user(userId):
     user = User.query.get_or_404(userId)
     if request.method == 'POST':
-        user.name = request.form['name']
-        user.email = request.form['email']
-        user.phone_number = request.form['phone_number']
-        user.role = request.form['role']
+        data = request.get_json() if request.is_json else request.form
+        
+        user.name = data.get('name')
+        user.email = data.get('email')
+        user.phone_number = data.get('phone_number')
+        user.role = data.get('role')
 
         try:
             db.session.commit()
-            flash('User updated successfully!', 'success')
-            return redirect(url_for('user_bp.get_users'))
+            return jsonify({'message': 'User updated successfully!'}), 200
         except Exception as e:
             db.session.rollback()
-            flash(f'Error updating user: {e}', 'danger')
+            return jsonify({'error': f'Error updating user: {e}'}), 500
 
-    return render_template('user/update.html', user=user)
+    return jsonify(user.to_dict()), 200
 
 # Delete a user
 @user_bp.route('/users/<int:userId>/delete', methods=['POST'])
@@ -77,9 +81,7 @@ def delete_user(userId):
     try:
         db.session.delete(user)
         db.session.commit()
-        flash('User deleted successfully!', 'success')
+        return jsonify({'message': 'User deleted successfully!'}), 200
     except Exception as e:
         db.session.rollback()
-        flash(f'Error deleting user: {e}', 'danger')
-
-    return redirect(url_for('user_bp.get_users'))
+        return jsonify({'error': f'Error deleting user: {e}'}), 500
