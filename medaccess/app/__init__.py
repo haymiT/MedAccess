@@ -34,7 +34,6 @@ def create_app():
     from app.routes.order import order_bp
     from app.routes.sell import sell_bp
     
-    
 
     # app.register_blueprint(consumer_bp)
     app.register_blueprint(pharmacy_bp)
