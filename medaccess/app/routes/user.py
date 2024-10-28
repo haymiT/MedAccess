@@ -1,6 +1,6 @@
 # app/routes/user.py
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
-from app.models import db, User
+from app.models import db, User, Supplier
 
 user_bp = Blueprint('user_bp', __name__)
 
@@ -19,7 +19,6 @@ def get_user(userId):
     usr = user.to_dict()
     return jsonify(usr)
 #return render_template('user/view.html', user=user)
-from flask import jsonify
 
 # Create a new user
 @user_bp.route('/users/new', methods=['GET', 'POST'])
@@ -44,6 +43,19 @@ def create_user():
         try:
             db.session.add(new_user)
             db.session.commit()
+
+            # If the user role is 'supplier', insert into the suppliers table
+            if role == 'supplier':
+                new_supplier = Supplier(
+                    name=name,
+                    address='Default Address',  # You can modify this as needed
+                    phone_number=phone_number,
+                    email=email,
+                    location='Default Location'  # You can modify this as needed
+                )
+                db.session.add(new_supplier)
+                db.session.commit()
+
             return jsonify({'message': 'User created successfully!'}), 201
         except Exception as e:
             db.session.rollback()
@@ -63,7 +75,7 @@ def update_user(userId):
         user.email = data.get('email')
         user.phone_number = data.get('phone_number')
         user.role = data.get('role')
-
+        
         try:
             db.session.commit()
             return jsonify({'message': 'User updated successfully!'}), 200
