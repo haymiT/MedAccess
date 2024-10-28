@@ -42,3 +42,15 @@ curl -X POST http://localhost:5000/inventory/inventory_id/edit \
 
 #to delete inventory item by using inventory sale_id
 curl -X POST http://localhost:5000/inventory/inventory_id/delete
+
+# to search for medication and if available display detail
+curl -X GET "http://localhost:5000/inventory/search?search_query=mediaction_name"
+example: curl -X GET "http://localhost:5000/inventory/search?search_query=parastamol"
+
+# To get detail of specific pharmacy 
+curl -X GET "http://localhost:5000/pharmacy/pharmacy_id"
+example: curl -X GET "http://localhost:5000/pharmacy/1"
+
+# To get detail of specific medications with in pharmacy
+curl -X GET "http://localhost:5000/pharmacy/pharmacy_id?medication_id=medication_id"
+example: curl -X GET "http://localhost:5000/pharmacy/1?medication_id=2"
