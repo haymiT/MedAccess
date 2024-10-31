@@ -1,0 +1,74 @@
+### API Documentation for file:///home/beki/MedAccess/medaccess/app/routes/inventory.py
+
+#### Base URL
+`/inventory`
+
+---
+
+#### Get All Inventory Items
+**Endpoint:** `GET /inventory`
+
+**Description:** Retrieves a list of all inventory items.
+
+**Response:**
+- **200 OK:** Returns a JSON array of all inventory items.
+
+
+#### Get a Single Inventory Item by ID
+**Endpoint:** `GET /inventory/<int:inventory_id>`
+
+**Description:** Retrieves a single inventory item by its ID.
+
+**Response:**
+- **200 OK:** Returns a JSON object of the inventory item, pharmacy, and medication.
+
+
+#### Create a New Inventory Item
+**Endpoint:** `POST /inventory/new`
+
+**Description:** Creates a new inventory item.
+
+
+#### Update an Existing Inventory Item
+**Endpoint:** `POST /inventory/<int:inventory_id>/edit`
+
+**Description:** Updates an existing inventory item by its ID.
+
+**Response:**
+- **200 OK:** If the inventory item is updated successfully.
+- **500 Internal Server Error:** If there is an error updating the inventory item.
+
+
+#### Delete an Inventory Item
+**Endpoint:** `POST /inventory/<int:inventory_id>/delete`
+
+**Description:** Deletes an inventory item by its ID.
+
+**Response:**
+- **200 OK:** If the inventory item is deleted successfully.
+- **500 Internal Server Error:** If there is an error deleting the inventory item.
+
+#### Search Medications
+**Endpoint:** `GET or POST /inventory/search`
+
+**Description:** Searches for medications based on a search query.
+
+**Response:**
+- **200 OK:** Returns a JSON array of search results.
+- **400 Bad Request:** If no search query is provided.
+
+**Example Request:**
+```json
+{
+    "search_query": "Medication A"
+}
+```
+
+#### Get Pharmacy Details
+**Endpoint:** `GET /pharmacy/<int:pharmacy_id>`
+
+**Description:** Retrieves details of a pharmacy and its medications.
+
+**Response:**
+- **200 OK:** Returns a JSON object of the pharmacy and its medications.
+- **404 Not Found:** If the pharmacy with the specified ID does not exist.
