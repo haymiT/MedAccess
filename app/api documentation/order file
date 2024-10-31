@@ -1,0 +1,115 @@
+Here's the API route documentation for the 
+
+order.py
+
+ file:
+
+# API Route Documentation
+
+## Get All Orders
+
+**Endpoint:** `/orders`
+
+**Method:** [`GET`]
+**Description:** Retrieves a list of all orders.
+
+**Response:**
+- `200 OK`: Returns a list of all orders.
+- `500 Internal Server Error`: If there is an error retrieving the orders.
+
+**Example Response:**
+```json
+[
+    {
+        "order_id": "123",
+        "pharmacy_id": "1",
+        "supplier_id": "2",
+        "order_date": "2023-10-01",
+        "order_status": "Pending",
+        "item_name": "Medication A",
+        "quantity": 10
+    },
+    ...
+]
+```
+
+## Get a Single Order
+
+**Endpoint:** `/orders/<order_id>`
+
+**Method:** [`GET`]
+**Response:**
+- `200 OK`: Returns the order details.
+- `404 Not Found`: If the order with the specified ID does not exist.
+
+**Example Response:**
+```json
+{
+    "order_id": "123",
+    "pharmacy_id": "1",
+    "supplier_id": "2",
+    "order_date": "2023-10-01",
+    "order_status": "Pending",
+    "item_name": "Medication A",
+    "quantity": 10
+}
+```
+
+## Create a New Order
+
+**Endpoint:** `/orders/new`
+
+**Method:** [`POST`]
+**Response:**
+- `201 Created`: If the order is created successfully.
+- `500 Internal Server Error`: If there is an error creating the order.
+
+**Example Response:**
+```json
+{
+    "message": "Order created successfully!"
+}
+```
+
+## Update an Existing Order
+
+**Endpoint:** `/orders/<order_id>/edit`
+
+**Method:** [`POST`]
+**Description:** Updates an existing order.
+
+**Response:**
+- `200 OK`: If the order is updated successfully.
+- `404 Not Found`: If the order with the specified ID does not exist.
+- `500 Internal Server Error`: If there is an error updating the order.
+
+**Example Response:**
+```json
+{
+    "message": "Order updated successfully!"
+}
+```
+
+## Delete an Order
+
+**Endpoint:** `/orders/<order_id>/delete`
+
+**Description:** Deletes an order.
+
+**Response:**
+- `200 OK`: If the order is deleted successfully.
+- `404 Not Found`: If the order with the specified ID does not exist.
+- `500 Internal Server Error`: If there is an error deleting the order.
+
+**Example Response:**
+```json
+{
+    "message": "Order deleted successfully!"
+}
+```
+
+This documentation provides a detailed overview of the API routes available in the 
+
+order.py
+
+ file, including endpoints, methods, descriptions, parameters, responses, and example responses.

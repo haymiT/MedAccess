@@ -1,0 +1,135 @@
+### API Documentation for 
+
+medication.py
+
+#### Base URL
+`/medications`
+---
+
+#### Get All Medications
+**Endpoint:** `GET /medications`
+
+**Description:** Retrieves a list of all medications.
+
+**Response:**
+- **200 OK:** Returns a JSON array of all medications.
+
+**Example Response:**
+```json
+[
+    {
+        "id": 1,
+        "name": "Medication A",
+        "description": "Description of Medication A",
+        "category": "Category A",
+        "dosage": "Dosage A"
+    },
+    ...
+]
+```
+
+---
+
+#### Get a Single Medication by ID
+**Endpoint:** `GET /medications/<int:id>`
+
+**Description:** Retrieves a single medication by its ID.
+
+**Response:**
+- **200 OK:** Returns a JSON object of the medication.
+- **404 Not Found:** If the medication with the specified ID does not exist.
+
+**Example Response:**
+```json
+{
+    "id": 1,
+    "name": "Medication A",
+    "description": "Description of Medication A",
+    "category": "Category A",
+    "dosage": "Dosage A"
+}
+```
+
+---
+
+#### Create a New Medication
+**Endpoint:** `POST /medications/new`
+
+**Description:** Creates a new medication.
+
+**Response:**
+- **201 Created:** If the medication is created successfully.
+- **400 Bad Request:** If any required fields are missing or if the category is invalid.
+- **500 Internal Server Error:** If there is an error creating the medication.
+
+**Example Request:**
+```json
+{
+    "name": "Medication A",
+    "description": "Description of Medication A",
+    "category": "Category A",
+    "dosage": "Dosage A"
+}
+```
+
+**Example Response:**
+```json
+{
+    "message": "Medication created successfully!"
+}
+```
+
+---
+
+#### Update an Existing Medication
+**Endpoint:** `POST /medications/<int:id>/edit`
+
+**Description:** Updates an existing medication by its ID.
+
+
+**Response:**
+- **200 OK:** If the medication is updated successfully.
+- **404 Not Found:** If the medication with the specified ID does not exist.
+- **500 Internal Server Error:** If there is an error updating the medication.
+
+**Example Request:**
+```json
+{
+    "name": "Updated Medication A",
+    "description": "Updated Description of Medication A",
+    "category": "Updated Category A",
+    "dosage": "Updated Dosage A"
+}
+```
+
+**Example Response:**
+```json
+{
+    "message": "Medication updated successfully!"
+}
+```
+
+---
+
+#### Delete a Medication
+**Endpoint:** `POST /medications/<int:id>/delete`
+
+**Description:** Deletes a medication by its ID.
+
+**Response:**
+- **200 OK:** If the medication is deleted successfully.
+- **404 Not Found:** If the medication with the specified ID does not exist.
+- **500 Internal Server Error:** If there is an error deleting the medication.
+
+**Example Response:**
+```json
+{
+    "message": "Medication deleted successfully!"
+}
+```
+
+---
+
+### Notes
+- All responses are in JSON format.
+- Ensure that the request body for creating and updating medications is in JSON format or form data.
