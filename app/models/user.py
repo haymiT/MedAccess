@@ -1,4 +1,5 @@
 # app/models/user.py
+from sqlalchemy import Boolean, Column, Integer, String
 from app.models import db
 
 class User(db.Model):
@@ -10,6 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)  # Password of the user
     phone_number = db.Column(db.String(20), nullable=False)  # Phone number of the user
     role = db.Column(db.Enum('customer', 'pharmacy', 'supplier'), nullable=False)  # Role of the user
+    is_archived = db.Column(Boolean, default=False)  # Soft delete field
 
     def __repr__(self):
         return f"<User {self.name} (Role: {self.role})>"
@@ -20,5 +22,6 @@ class User(db.Model):
             'name': self.name,
             'email': self.email,
             'phone_number': self.phone_number,
-            'role': self.role
+            'role': self.role,
+            'is_archived': self.is_archived
         }
