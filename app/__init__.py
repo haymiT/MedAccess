@@ -7,8 +7,10 @@ import os
 
 load_dotenv()
 
-def create_app():
+def create_app(config_name=None):
     app = Flask(__name__)
+    if config_name:
+        app.config.from_object(config_name)
     
     # CORS Configuration with credentials and explicit methods allowed
     cors = CORS(app, resources={r"/*": {"origins": "http://localhost:6445"}}, supports_credentials=True)
